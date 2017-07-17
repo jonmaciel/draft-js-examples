@@ -4,6 +4,10 @@
   "private": true,
   "dependencies": {
     "draft-js": "^0.10.1",
+    "draft-js-mention-plugin": "^2.0.0-beta1",
+    "draft-js-plugins-editor": "^2.0.0-beta1",
+    "install": "^0.10.1",
+    "npm": "^5.3.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.10"
@@ -13,5 +17,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.4",
+    "style-loader": "^0.18.2"
   }
 }
