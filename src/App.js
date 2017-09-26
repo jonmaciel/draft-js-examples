@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
-import './App.css'
 
 import {
   Editor,
   EditorState,
+  ContentState,
   CompositeDecorator,
   Entity,
   Modifier,
-  ContentState
+  Selector,
 } from 'draft-js'
 
+import './App.css'
 class App extends Component {
   constructor(props) {
     super(props)
@@ -22,7 +23,7 @@ class App extends Component {
     }
   }
 
-  onChange = (editorState) => this.setState({editorState})
+  onChange = editorState => this.setState({editorState})
 
   render() {
     return (
