@@ -32,7 +32,7 @@ class App extends Component {
   renderhashTagSpan = (props) =>
     <span {...props} style={styles.hashTag}>{props.children}</span>;
 
-  onChange = (editorState) => { this.setState({editorState}) }
+  onChange = editorState => this.setState({editorState})
 
   hashTagStrategy = (contentBlock, callback) => {
     this.findWithRegex(HASHTAG_REGEX, contentBlock, callback);
