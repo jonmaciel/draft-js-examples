@@ -28,6 +28,9 @@ class App extends Component {
     )
   }
 }
+
+export default App
+
+
 // <div>{this.state.editorState.getCurrentContent().getPlainText()}</div>
 // style={{'backgroundColor': '#00ff00'}}
-export default App
