@@ -9,7 +9,7 @@ class App extends Component {
 
     this.state = {
       editorState: EditorState.createWithContent(
-        ContentState.createFromText('Oi')
+        ContentState.createFromText('')
       )
     }
   }
