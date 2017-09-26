@@ -14,7 +14,7 @@ class App extends Component {
     }
   }
 
-  onChange = (editorState) => { this.setState({editorState}) }
+  onChange = (editorState) => this.setState({editorState})
 
   render() {
     return (
