@@ -5,17 +5,21 @@ import { Editor, EditorState, CompositeDecorator, Entity, Modifier, ContentState
 import './App.css'
 
 const styles = {
-  handle: {
+  hashTag: {
     color: 'rgba(98, 177, 254, 1.0)',
     direction: 'ltr',
     unicodeBidi: 'bidi-override',
   }
 }
 
+const HASHTAG_REGEX = /\#[\w]+/g;
+
 class App extends Component {
   constructor(props) {
     super(props)
-    const compositeDecorator = new CompositeDecorator([{ strategy: this.fieldVarStrategy, component: this.decoratorComponent }])
+    const compositeDecorator = new CompositeDecorator([
+      { strategy: this.hashTagStrategy, component: this.renderhashTagSpan }
+    ])
 
     this.state = {
       editorState: EditorState.createWithContent(
@@ -25,65 +29,22 @@ class App extends Component {
     }
   }
 
-  decoratorComponent = (props) => {
-    // props.children
-    return (
-      <span style={styles.handle} data-offset-key={props.offsetKey} contentEditable={false}>
-        <a>Variable <span onClick={() => this.removeVarByEntity(props.entityKey)}>X</span></a>
-      </span>
-    )
-  }
+  renderhashTagSpan = (props) =>
+    <span {...props} style={styles.hashTag}>{props.children}</span>;
 
   onChange = (editorState) => { this.setState({editorState}) }
 
-  fieldVarStrategy = (contentBlock, callback, contentState) => {
-    contentBlock.findEntityRanges((character) => {
-      let entityKey = character.getEntity();
-      return entityKey !== null && contentState.getEntity(entityKey).getType() === 'FIELDVAR';
-    }, callback)
+  hashTagStrategy = (contentBlock, callback) => {
+    this.findWithRegex(HASHTAG_REGEX, contentBlock, callback);
   }
 
-  addVar = () => {
-    let label = '%{VALUE}'
-    const editorState = this.state.editorState;
-    const contentState = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-    const entityKey = Entity.create('FIELDVAR', 'IMMUTABLE', {});
-
-    this.setState({
-        editorState: EditorState.push(
-          editorState,
-          Modifier.replaceText(contentState, selection, label, null, entityKey),
-          'replace-text'
-        )
-    });
-  }
-
-  removeVarByEntity = (entityKey) => {
-    let editorState = this.state.editorState
-    let contentState = editorState.getCurrentContent()
-
-    contentState.getBlockMap().forEach((block) => {
-      block.findEntityRanges((character) => (entityKey === character.getEntity()), this.removeVar)
-    })
-  }
-
-  removeVar = (start, end) => {
-    let editorState = this.state.editorState
-    let contentState = editorState.getCurrentContent()
-    let selectionState = editorState.getSelection().merge({anchorOffset: start, focusOffset: end})
-
-    this.setState({
-      editorState: EditorState.push(
-        editorState,
-        Modifier.removeRange(
-          contentState,
-          selectionState,
-          'forward'
-        ),
-        'remove-text'
-      )
-    })
+  findWithRegex = (regex, contentBlock, callback) => {
+    const text = contentBlock.getText();
+    let matchArr, start;
+    while ((matchArr = regex.exec(text)) !== null) {
+      start = matchArr.index;
+      callback(start, start + matchArr[0].length);
+    }
   }
 
   render() {
@@ -96,10 +57,6 @@ class App extends Component {
         </div>
         <br/>
         <div>{this.state.editorState.getCurrentContent().getPlainText()}</div>
-        <br/>
-        <div>
-          <a href="#AddVar" onClick={this.addVar}>ADD VAR</a>
-        </div>
       </div>
     )
   }
