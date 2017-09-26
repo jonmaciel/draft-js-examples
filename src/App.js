@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import logo from './logo.svg'
-import { Editor, EditorState, CompositeDecorator, Entity, Modifier, ContentState } from 'draft-js'
 import './App.css'
+
+import {
+  Editor,
+  EditorState,
+  CompositeDecorator,
+  Entity,
+  Modifier,
+  ContentState
+} from 'draft-js'
 
 class App extends Component {
   constructor(props) {
