@@ -34,7 +34,7 @@ class App extends Component {
     )
   }
 
-  onChange = (editorState) => { this.setState({editorState}) }
+  onChange = editorState => this.setState({editorState})
 
   fieldVarStrategy = (contentBlock, callback, contentState) => {
     contentBlock.findEntityRanges((character) => {
